@@ -1,5 +1,5 @@
 # TCP_migration_advanced
-## 1. Running: python3 mn.py in terminal of Virtual Machine, and open the terminal of Server1,Gateway,Client
+## 1. Running: python3 mn.py in terminal of Virtual Machine, and open the terminal of Server1, Gateway, Client
 ![截屏2023-04-21 上午11 08 31](https://user-images.githubusercontent.com/105418310/233531326-1e58e60c-7b0e-47f7-bf5f-abc938e699f8.jpg)
 
 ## 2. Running: nfq.py in Gateway; server1.py in Server1; client.py in Client
