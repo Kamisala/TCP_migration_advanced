@@ -3,14 +3,18 @@ This project provides a TCP migration idea based on netfilterqueue. This migrati
 
 ## Migration Design principle
 ![image](https://user-images.githubusercontent.com/105418310/234158371-ba619164-5365-428c-b45d-431d36084a94.png)
+
 Stage 1: Three-way Handshake. The Client and Server 1 perform a normal TCP three-way handshake, which is recorded by Gateway. It mainly includes the IP address, port number, sequence number, and ACK of both parties.
+
 Stage 2: TCP Normal Data Transmission. The Client and Server 1 perform the normal TCP data transmission phase. The gateway will record the last data packet sent by the Client, mainly recording the current status of the Client and Server 1, namely, sequence number and ACK number.
+
 Stage 3: TCP-Migration. When the Client sends the payload packet (recorded as packet_m) and it is time to migrate, Gateway intercepts it and modifies the destination IP address and port number to Server 2's address. Gateway then recalculates the checksum and sends the packet to Server 2. Prior to sending the packets, Gateway replays a 3-way handshake to Server 2. The specific flow is as follows:
-1.First, it utilizes the recorded SYN packet from step 1 to establish the first handshake with Server 2. However, during this process, the sequence number of the SYN packet is changed to the sequence number of packet_m minus one.
-2.Server 2 responds with a SYN-ACK packet, believing that it is establishing a new connection with the Client.
-3.Gateway intercepts the SYN-ACK packet and records the sequence number from Server 2. It then modifies the destination IP address, port number, sequence number and ACK number in the recorded ACK packet from the original three-way handshake, using the recorded sequence number from Server 2. Gateway then sends the modified ACK packet to Server 2 to establish the third handshake. At this point, the TCP three handshake ends.
-4.The Gateway modifies the destination IP address, destination port number, and ACK number of packet_m, recalculates the checksum, and sends it to Server 2. 
-5.Similarly, for the packet received in the response from Server 2. The Gateway modifies the source IP address, source port number, and sequence number of the packet, recalculates the checksum, and then sends it to the Client. At this point, we have established a TCP link to migrate the initial TCP from FlowS1 to FlowS2.
+  1.First, it utilizes the recorded SYN packet from step 1 to establish the first handshake with Server 2. However, during this process, the sequence number of the SYN packet is changed to the sequence number of packet_m minus one.
+  2.Server 2 responds with a SYN-ACK packet, believing that it is establishing a new connection with the Client.
+  3.Gateway intercepts the SYN-ACK packet and records the sequence number from Server 2. It then modifies the destination IP address, port number, sequence number and ACK number in the recorded ACK packet from the original three-way handshake, using the recorded sequence number from Server 2. Gateway then sends the modified ACK packet to Server 2 to establish the third handshake. At this point, the TCP three handshake ends.
+  4.The Gateway modifies the destination IP address, destination port number, and ACK number of packet_m, recalculates the checksum, and sends it to Server 2. 
+  5.Similarly, for the packet received in the response from Server 2. The Gateway modifies the source IP address, source port number, and sequence number of the packet, recalculates the checksum, and then sends it to the Client. At this point, we have established a TCP link to migrate the initial TCP from FlowS1 to FlowS2.
+
 Stage 4: TCP Data Transmission. The Gateway needs to constantly modify the destination/source IP address, destination/source port number, and ACK/sequence number of packets in the same form as before to maintain TCP migration from FlowS1 to FlowS2.
 
 
@@ -33,7 +37,7 @@ We can see that: There are 5 TCP data interactions between Client and Server2，
 4. Subsequent request information from the Client is printed on Server 2, while subsequent response message received by Client will be the response_message_2 (for example, "I am server 2") from Server 2.
 5. The terminal of Server 1 prints information about the IP address and port number of the Client and "I am client index (index means 0,1)", while the terminal of Server 2 prints information about the IP address and port number of the Client and "I am client index (index means 2,3,4...)" information. The Client terminal prints 2 "I am Server 1" and (n-2) "I am Server 2" information.
 
-note: The implementation of this project will not open the terminal of server 2, so you cannot see the printing of terminal 2 in the video, but the printing of terminal 2 can refer to the figure below.
+Note: The implementation of this project will not open the terminal of server 2, so you cannot see the printing of terminal 2 in the video, but the printing of terminal 2 can refer to the figure below.
 ![image](https://user-images.githubusercontent.com/105418310/234159785-54fca0ce-c91f-428e-aa40-1405b112ceed.png)
 
 
