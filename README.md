@@ -33,5 +33,9 @@ We can see that: There are 5 TCP data interactions between Client and Server2，
 4. Subsequent request information from the Client is printed on Server 2, while subsequent response message received by Client will be the response_message_2 (for example, "I am server 2") from Server 2.
 5. The terminal of Server 1 prints information about the IP address and port number of the Client and "I am client index (index means 0,1)", while the terminal of Server 2 prints information about the IP address and port number of the Client and "I am client index (index means 2,3,4...)" information. The Client terminal prints 2 "I am Server 1" and (n-2) "I am Server 2" information.
 
+note: The implementation of this project will not open the terminal of server 2, so you cannot see the printing of terminal 2 in the video, but the printing of terminal 2 can refer to the figure below.
+![image](https://user-images.githubusercontent.com/105418310/234159785-54fca0ce-c91f-428e-aa40-1405b112ceed.png)
+
+
 ## Contact
 LLY - atomy.lly@gmail.com
