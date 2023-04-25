@@ -17,6 +17,8 @@ Stage 3: TCP-Migration. When the Client sends the payload packet (recorded as pa
 
 Stage 4: TCP Data Transmission. The Gateway needs to constantly modify the destination/source IP address, destination/source port number, and ACK/sequence number of packets in the same form as before to maintain TCP migration from FlowS1 to FlowS2.
 
+## Contributing
+This project provides an idea to migrate TCP at any time. Great for stateless protocols. According to this idea, you can even migrate TCP back to the original host after TCP migration.
 
 ## Setup
 1. Running: python3 mn.py in terminal of Virtual Machine, and open the terminal of Server1, Gateway, Client
